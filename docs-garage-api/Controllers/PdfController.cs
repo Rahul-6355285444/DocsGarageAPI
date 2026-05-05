@@ -28,7 +28,7 @@ namespace docs_garage_api.Controllers
             {
                 var validationResult = _validationService.ValidatePdfFiles(files);
 
-                if (!validationResult.IsValid)
+                if (validationResult.IsValid)
                 {
                     var result = await _mergePdfService.MergeAsync(files);
 

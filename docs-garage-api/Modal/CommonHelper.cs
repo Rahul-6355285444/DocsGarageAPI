@@ -5,7 +5,7 @@
         public const string Nofilesuploaded = "No files uploaded.";
         public const string Success = "Success";
         public const string Failed = "Failed";
-        public const int PdfMaxSize = 10;
+        public const int PdfMaxSize = 50;
 
         public static string EmptyFileMsg(string fileName) => $"{fileName} is empty.";
         public static int GetPdfMaxSize() => PdfMaxSize * 1024 * 1024;
