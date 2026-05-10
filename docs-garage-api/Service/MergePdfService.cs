@@ -7,7 +7,7 @@ namespace docs_garage_api.Service
 {
     public class MergePdfService : IMergePdfService
     {
-        public async Task<FileResponse> MergeAsync(List<IFormFile> files)
+        public async Task<FileResponse> MergeAsync(List<IFormFile> files, List<int> rotations)
         {
             try
             {
@@ -16,15 +16,33 @@ namespace docs_garage_api.Service
 
                 var outputdocument = new PdfDocument();
 
-                foreach (var file in files)
-                {
-                    using var stream = file.OpenReadStream();
+                //foreach (var file in files)
+                //{
+                //    using var stream = file.OpenReadStream();
 
+                //    var inputDocument = PdfReader.Open(stream, PdfDocumentOpenMode.Import);
+
+                //    for (int i = 0; i < inputDocument.PageCount; i++)
+                //    {
+                //        outputdocument.AddPage(inputDocument.Pages[i]);
+                //    }
+                //}
+
+                for (int f = 0; f < files.Count; f++)
+                {
+                    var file = files[f];
+
+                    int rotation = (rotations != null && rotations.Count > 0) ? rotations[f] : 0;
+
+                    using var stream = file.OpenReadStream();
                     var inputDocument = PdfReader.Open(stream, PdfDocumentOpenMode.Import);
 
                     for (int i = 0; i < inputDocument.PageCount; i++)
                     {
-                        outputdocument.AddPage(inputDocument.Pages[i]);
+                        var page = outputdocument.AddPage(inputDocument.Pages[i]);
+
+                        if (rotation != 0)
+                            page.Rotate = (page.Rotate + rotation) % 360;
                     }
                 }
 

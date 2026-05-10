@@ -4,6 +4,6 @@ namespace docs_garage_api.Interface
 {
     public interface IMergePdfService
     {
-        Task<FileResponse> MergeAsync(List<IFormFile> files);
+        Task<FileResponse> MergeAsync(List<IFormFile> files, List<int> rotations);
     }
 }

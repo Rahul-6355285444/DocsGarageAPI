@@ -22,8 +22,19 @@ builder.WebHost.ConfigureKestrel(options =>
 {
     options.Limits.MaxRequestBodySize = 200 * 1024 * 1024;       // 200 MB
 });
-var app = builder.Build();
 
+// Sirf ek AddCors rakho
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()   // ← dev ke liye easiest
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+var app = builder.Build();
+app.UseCors("AllowAll");  // ← "AllowAngular" se "AllowAll" karo
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -31,7 +42,7 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
-
+app.UseCors("AllowAngular");
 app.UseAuthorization();
 
 app.MapControllers();

@@ -3,6 +3,7 @@ using docs_garage_api.Modal;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using PdfSharp;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -22,7 +23,7 @@ namespace docs_garage_api.Controllers
         }
 
         [HttpPost("merge")]
-        public async Task<IActionResult> Merge([FromForm] List<IFormFile> files)
+        public async Task<IActionResult> Merge([FromForm] List<IFormFile> files,[FromForm] List<int> rotations)
         {
             try
             {
@@ -30,7 +31,7 @@ namespace docs_garage_api.Controllers
 
                 if (validationResult.IsValid)
                 {
-                    var result = await _mergePdfService.MergeAsync(files);
+                    var result = await _mergePdfService.MergeAsync(files, rotations);
 
                     return Ok(new Response() { status = HttpStatusCode.OK, message = CommonHelper.Success, data = JsonConvert.SerializeObject(result) });
                 } 
